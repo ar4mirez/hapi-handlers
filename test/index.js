@@ -20,7 +20,7 @@ describe(internals.info.name + ' plugin registration.', () => {
         const server = new Hapi.Server();
         server.register({
             register: require('../'),
-            options: { dir: 'test/artifacts' }
+            options: { dir: 'test/handlers' }
         }, (err) => {
 
             expect(err).to.not.exist();
@@ -56,7 +56,7 @@ describe(internals.info.name + ' functionality.', () => {
         server.connection();
         server.register({
             register: require('../'),
-            options: { dir: 'test/artifacts' }
+            options: { dir: 'test/handlers' }
         }, done);
     });
 
