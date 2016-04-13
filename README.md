@@ -1,8 +1,11 @@
 # hapi-handlers
+[![Npm Version][npm-badge]][npm-url]
 [![Build Status][travis-badge]][travis-url]
 [![Dependencies][david-badge]][david-url]
 [![Dev dependencies][david-dev-badge]][david-url]
 
+[npm-badge]: https://badge.fury.io/js/hapi-handlers.svg
+[npm-url]: https://badge.fury.io/js/hapi-handlers
 [travis-badge]: https://travis-ci.org/ar4mirez/hapi-handlers.svg?branch=master
 [travis-url]: https://travis-ci.org/ar4mirez/hapi-handlers
 [david-badge]: https://david-dm.org/ar4mirez/hapi-handlers.svg
