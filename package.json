@@ -10,9 +10,9 @@
     "async": "^2.0.0-rc.3"
   },
   "devDependencies": {
-    "code": "2.x.x",
-    "hapi": "12.x.x",
-    "lab": "8.x.x"
+    "code": "^2.2.0",
+    "hapi": "^13.3.0",
+    "lab": "^10.3.1"
   },
   "engines": {
     "node": ">=4.0.0"
