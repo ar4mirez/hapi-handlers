@@ -4,6 +4,8 @@
 [![Dependencies][david-badge]][david-url]
 [![Dev dependencies][david-dev-badge]][david-url]
 
+[![NPM](https://nodei.co/npm/hapi-handlers.png)](https://nodei.co/npm/hapi-handlers/)
+
 [npm-badge]: https://badge.fury.io/js/hapi-handlers.svg
 [npm-url]: https://badge.fury.io/js/hapi-handlers
 [travis-badge]: https://travis-ci.org/ar4mirez/hapi-handlers.svg?branch=master
