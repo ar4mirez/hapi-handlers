@@ -1,0 +1,36 @@
+{
+  "name": "hapi-handlers",
+  "description": "Autoload Handlers for HapiJS.",
+  "version": "1.0.0",
+  "author": "Angel Ramirez <angel@cuemby.com>",
+  "bugs": {
+    "url": "https://github.com/ar4mirez/hapi-handlers/issues"
+  },
+  "dependencies": {
+    "async": "^2.0.0-rc.3"
+  },
+  "devDependencies": {
+    "code": "2.x.x",
+    "hapi": "12.x.x",
+    "lab": "8.x.x"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/ar4mirez/hapi-handlers#readme",
+  "keywords": [
+    "handlers",
+    "hapi",
+    "plugin"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ar4mirez/hapi-handlers.git"
+  },
+  "scripts": {
+    "test": "lab -c -L",
+    "test-cover": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
+  }
+}
