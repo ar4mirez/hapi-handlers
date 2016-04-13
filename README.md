@@ -3,7 +3,7 @@
 [![Dependencies][david-badge]][david-url]
 [![Dev dependencies][david-dev-badge]][david-url]
 
-[travis-badge]: https://travis-ci.org/ar4mirez/hapi-handlers.svg?token=Y5c2Yh3HiTw9G5oH7ZkQ&branch=master
+[travis-badge]: https://travis-ci.org/ar4mirez/hapi-handlers.svg?branch=master
 [travis-url]: https://travis-ci.org/ar4mirez/hapi-handlers
 [david-badge]: https://david-dm.org/ar4mirez/hapi-handlers.svg
 [david-dev-badge]: https://david-dm.org/ar4mirez/hapi-handlers/dev-status.svg
