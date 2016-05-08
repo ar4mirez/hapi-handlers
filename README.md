@@ -31,7 +31,9 @@ server.connection();
 
 server.register({
     register: require('hapi-handlers'),
-    options: {dir: 'path/to/handlers'}
+    options: {
+        includes: 'path/to/**/*Handlers.js' // uses glob to include files
+    }
 }, (err) => {
   // continue application
 });
@@ -45,7 +47,7 @@ registrations: [
         plugin: {
             register: 'hapi-handlers',
             options: {
-                dir: 'path/to/handlers'
+                includes: 'path/to/**/*Handlers.js'
             }
         }
     }
@@ -65,6 +67,27 @@ server.route({
     }
 })
 ```
+
+### Options
+##### includes
+
+*Required* <br/>
+Type: `string` / `array`
+
+The [glob](https://github.com/isaacs/node-glob) pattern you would like to include
+
+##### ignores
+
+Type: `string` / `array`
+
+The pattern or an array of patterns to exclude
+
+##### relativeTo
+
+Type: `string`
+
+The current working directory in which to search (defaults to `process.cwd()`)
+
 
 #### Handler Signature
 ```javascript
