@@ -74,7 +74,7 @@ server.route({
 *Required* <br/>
 Type: `string` / `array`
 
-The [glob](https://github.com/bsiddiqui/hapi-router#glob-primer) pattern you would like to include
+The [glob](https://github.com/isaacs/node-glob) pattern you would like to include
 
 ##### ignores
 
