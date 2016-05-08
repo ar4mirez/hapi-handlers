@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "glob": "^7.0.3",
-    "async": "^2.0.0-rc.3",
-    "cast-array": "^1.0.1"
+    "async": "^2.0.0-rc.3"
   },
   "devDependencies": {
     "code": "^2.2.0",
@@ -32,7 +31,7 @@
     "url": "git+https://github.com/ar4mirez/hapi-handlers.git"
   },
   "scripts": {
-    "test": "lab -c -L",
+    "test": "lab -c -v -L",
     "test-cover": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
   }
 }
