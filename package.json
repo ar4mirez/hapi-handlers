@@ -7,7 +7,9 @@
     "url": "https://github.com/ar4mirez/hapi-handlers/issues"
   },
   "dependencies": {
-    "async": "^2.0.0-rc.3"
+    "glob": "^7.0.3",
+    "async": "^2.0.0-rc.3",
+    "cast-array": "^1.0.1"
   },
   "devDependencies": {
     "code": "^2.2.0",
