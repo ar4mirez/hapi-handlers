@@ -1,15 +1,13 @@
 'use strict';
 
-const Hapi = require('hapi');
-const Code = require('code');
-const Lab = require('lab');
+const Hapi = require('@hapi/hapi');
+const Code = require('@hapi/code');
+const Lab = require('@hapi/lab');
 const Plugin = require('../');
 
 const expect = Code.expect;
 const lab = exports.lab = Lab.script();
-const beforeEach = lab.beforeEach;
-const describe = lab.describe;
-const it = lab.it;
+const { beforeEach, describe, it } = lab;
 
 const internals = {
     info: require('../package')
@@ -19,42 +17,81 @@ describe(internals.info.name + ' plugin registration.', () => {
 
     let server;
 
-    beforeEach((done) => {
+    beforeEach(() => {
 
-        server = new Hapi.Server();
-
-        return done();
+        server = Hapi.server();
     });
 
-    it('registers successfully', (done) => {
+    it('registers successfully', async () => {
 
-        server.register({
-            register: Plugin,
+        await server.register({
+            plugin: Plugin,
             options: {
                 includes: 'test/handlers/**/*.js'
             }
-        }, (err) => {
-
-            expect(err).to.not.exist();
-
-            return done();
         });
+
+        expect(server.registrations['hapi-handlers']).to.exist();
     });
 
-    it('returns an error if no files loaded', (done) => {
+    it('returns an error if no files loaded', async () => {
 
-        server.register({
-            register: Plugin,
+        await expect(
+            server.register({
+                plugin: Plugin,
+                options: {
+                    includes: 'does/not/exist/**/*.js'
+                }
+            })
+        ).to.reject(Error, 'No handler files found for pattern "does/not/exist/**/*.js"');
+    });
+
+    it('returns an error if includes option is missing', async () => {
+
+        await expect(
+            server.register({
+                plugin: Plugin,
+                options: {}
+            })
+        ).to.reject(Error, 'The "includes" option is required');
+    });
+
+    it('handles multiple include patterns', async () => {
+
+        await server.register({
+            plugin: Plugin,
             options: {
-                includes: 'does/not/exist/**/*.js'
+                includes: ['test/handlers/handler1.js', 'test/handlers/handler2.js']
             }
-        }, (err) => {
-
-            expect(err).to.exist();
-            expect(err).to.include('No handler files found for pattern');
-
-            return done();
         });
+
+        expect(server.registrations['hapi-handlers']).to.exist();
+    });
+
+    it('respects ignore patterns', async () => {
+
+        await expect(
+            server.register({
+                plugin: Plugin,
+                options: {
+                    includes: 'test/handlers/**/*.js',
+                    ignores: ['test/handlers/**/*.js']
+                }
+            })
+        ).to.reject(Error, 'No handler files found for pattern "test/handlers/**/*.js"');
+    });
+
+    it('uses relativeTo option for base path', async () => {
+
+        await server.register({
+            plugin: Plugin,
+            options: {
+                includes: 'handlers/**/*.js',
+                relativeTo: process.cwd() + '/test'
+            }
+        });
+
+        expect(server.registrations['hapi-handlers']).to.exist();
     });
 });
 
@@ -62,19 +99,16 @@ describe(internals.info.name + ' functionality.', () => {
 
     let server;
 
-    beforeEach((done) => {
+    beforeEach(async () => {
 
-        server = new Hapi.Server();
-        server.connection();
-        server.register({
-            register: Plugin,
+        server = Hapi.server();
+
+        await server.register({
+            plugin: Plugin,
             options: {
                 includes: 'test/handlers/**/*.js'
             }
-        }, done);
-    });
-
-    beforeEach((done) => {
+        });
 
         server.route({
             method: 'GET',
@@ -86,19 +120,38 @@ describe(internals.info.name + ' functionality.', () => {
             }
         });
 
-        server.initialize(done);
+        await server.initialize();
     });
 
-    it('able to execute handler1.', (done) => {
+    it('able to execute handler1.', async () => {
 
-        server.inject({
+        const res = await server.inject({
             method: 'GET',
             url: '/route1'
-        }, (res) => {
-
-            expect(res.statusCode).to.be.equal(200);
-
-            return done();
         });
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.payload).to.equal('new handler: Handler.');
+    });
+
+    it('able to use handler2.', async () => {
+
+        server.route({
+            method: 'GET',
+            path: '/route2',
+            handler: {
+                handler2: {
+                    msg: 'Second Handler.'
+                }
+            }
+        });
+
+        const res = await server.inject({
+            method: 'GET',
+            url: '/route2'
+        });
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.payload).to.equal('new handler: Second Handler.');
     });
 });

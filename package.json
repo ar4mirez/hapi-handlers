@@ -1,28 +1,28 @@
 {
   "name": "hapi-handlers",
   "description": "Autoload Handlers for HapiJS.",
-  "version": "2.0.0",
+  "version": "4.0.0",
   "author": "Angel Ramirez <angel@cuemby.com>",
   "bugs": {
     "url": "https://github.com/ar4mirez/hapi-handlers/issues"
   },
   "dependencies": {
-    "glob": "^7.0.3",
-    "async": "^2.0.0-rc.3"
+    "glob": "^10.4.5"
   },
   "devDependencies": {
-    "code": "^2.2.0",
-    "hapi": "^13.3.0",
-    "lab": "^10.3.1"
+    "@hapi/code": "^9.0.3",
+    "@hapi/hapi": "^21.4.4",
+    "@hapi/lab": "^26.0.0"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=18.0.0"
   },
   "homepage": "https://github.com/ar4mirez/hapi-handlers#readme",
   "keywords": [
     "handlers",
     "hapi",
-    "plugin"
+    "plugin",
+    "autoload"
   ],
   "license": "MIT",
   "main": "lib/index.js",
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/ar4mirez/hapi-handlers.git"
   },
   "scripts": {
-    "test": "lab -c -v -L",
-    "test-cover": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
+    "test": "lab -c -v -L -t 80",
+    "test:coverage": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
   }
 }
