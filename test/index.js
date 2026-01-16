@@ -31,7 +31,7 @@ describe(internals.info.name + ' plugin registration.', () => {
             }
         });
 
-        expect(server.registrations['hapi-handlers']).to.exist();
+        expect(server.registrations[internals.info.name]).to.exist();
     });
 
     it('returns an error if no files loaded', async () => {
@@ -65,7 +65,7 @@ describe(internals.info.name + ' plugin registration.', () => {
             }
         });
 
-        expect(server.registrations['hapi-handlers']).to.exist();
+        expect(server.registrations[internals.info.name]).to.exist();
     });
 
     it('respects ignore patterns', async () => {
@@ -91,7 +91,7 @@ describe(internals.info.name + ' plugin registration.', () => {
             }
         });
 
-        expect(server.registrations['hapi-handlers']).to.exist();
+        expect(server.registrations[internals.info.name]).to.exist();
     });
 });
 
