@@ -24,3 +24,11 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# AI agent workspace
+.agent/
+.claude/
+CLAUDE.md
+AGENTS.md
+AI_INSTRUCTIONS.md
+aicof.yaml
