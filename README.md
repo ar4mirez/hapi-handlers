@@ -1,105 +1,228 @@
 # hapi-handlers
-[![Npm Version][npm-badge]][npm-url]
-[![Build Status][travis-badge]][travis-url]
-[![Dependencies][david-badge]][david-url]
-[![Dev dependencies][david-dev-badge]][david-url]
 
-[![NPM](https://nodei.co/npm/hapi-handlers.png)](https://nodei.co/npm/hapi-handlers/)
+[![npm version](https://img.shields.io/npm/v/hapi-handlers.svg)](https://www.npmjs.com/package/hapi-handlers)
+[![CI](https://github.com/ar4mirez/hapi-handlers/actions/workflows/ci.yml/badge.svg)](https://github.com/ar4mirez/hapi-handlers/actions/workflows/ci.yml)
+[![Node.js](https://img.shields.io/node/v/hapi-handlers.svg)](https://nodejs.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[npm-badge]: https://badge.fury.io/js/hapi-handlers.svg
-[npm-url]: https://badge.fury.io/js/hapi-handlers
-[travis-badge]: https://travis-ci.org/ar4mirez/hapi-handlers.svg?branch=master
-[travis-url]: https://travis-ci.org/ar4mirez/hapi-handlers
-[david-badge]: https://david-dm.org/ar4mirez/hapi-handlers.svg
-[david-dev-badge]: https://david-dm.org/ar4mirez/hapi-handlers/dev-status.svg
-[david-url]: https://david-dm.org/ar4mirez/hapi-handlers
-[david-dev-url]: https://david-dm.org/ar4mirez/hapi-handlers#info=devDependencies
+Plugin to autoload handlers for [hapi.js](https://hapi.dev/) based on glob patterns.
 
-Plugin to autoload handlers based on patterns.
+## Requirements
 
-### How to use:
-- Install `hapi-handlers` npm package in your project our plugin.
-`npm i hapi-handlers`
-- Register plugin in your hapi server:
+- **Node.js** >= 18.0.0
+- **@hapi/hapi** >= 21.0.0
 
-### Registering
+## Installation
+
+```bash
+npm install hapi-handlers
+```
+
+## Usage
+
+### Basic Registration
 
 ```javascript
-const server = new Hapi.Server();
+const Hapi = require('@hapi/hapi');
 
-server.connection();
+const init = async () => {
+    const server = Hapi.server({ port: 3000 });
 
-server.register({
-    register: require('hapi-handlers'),
+    await server.register({
+        plugin: require('hapi-handlers'),
+        options: {
+            includes: 'path/to/**/*Handler.js'
+        }
+    });
+
+    // Your handlers are now available
+    server.route({
+        method: 'GET',
+        path: '/hello',
+        handler: {
+            helloHandler: {
+                message: 'Hello World!'
+            }
+        }
+    });
+
+    await server.start();
+    console.log('Server running on %s', server.info.uri);
+};
+
+init();
+```
+
+### Multiple Patterns
+
+```javascript
+await server.register({
+    plugin: require('hapi-handlers'),
     options: {
-        includes: 'path/to/**/*Handlers.js' // uses glob to include files
+        includes: [
+            'handlers/**/*.js',
+            'api/**/handler.js'
+        ],
+        ignores: ['**/*.test.js']
     }
-}, (err) => {
-  // continue application
 });
 ```
 
-manifest style:
+### With Glue/Confidence Manifest
+
 ```javascript
-registrations: [
-    ...
-    {
-        plugin: {
-            register: 'hapi-handlers',
-            options: {
-                includes: 'path/to/**/*Handlers.js'
+const manifest = {
+    server: {
+        port: 3000
+    },
+    register: {
+        plugins: [
+            {
+                plugin: 'hapi-handlers',
+                options: {
+                    includes: 'handlers/**/*.js',
+                    relativeTo: __dirname
+                }
             }
-        }
+        ]
     }
-];
+};
 ```
 
-Your handlers are available in your routes using the handle file name:
-```javascript
+## Options
 
-server.route({
-    method: 'GET',
-    path: '/route',
-    config: {
-        handler: {
-            handlerName: {} // assuming your handle file is handlerName
-        }
-    }
-})
+### `includes` (required)
+
+- **Type:** `string` | `string[]`
+- **Description:** The [glob](https://github.com/isaacs/node-glob) pattern(s) to match handler files.
+
+```javascript
+// Single pattern
+includes: 'handlers/**/*.js'
+
+// Multiple patterns
+includes: ['handlers/**/*.js', 'api/**/handler.js']
 ```
 
-### Options
-##### includes
+### `ignores`
 
-*Required* <br/>
-Type: `string` / `array`
+- **Type:** `string` | `string[]`
+- **Description:** Pattern(s) to exclude from matching.
 
-The [glob](https://github.com/isaacs/node-glob) pattern you would like to include
-
-##### ignores
-
-Type: `string` / `array`
-
-The pattern or an array of patterns to exclude
-
-##### relativeTo
-
-Type: `string`
-
-The current working directory in which to search (defaults to `process.cwd()`)
-
-
-#### Handler Signature
 ```javascript
+ignores: ['**/*.test.js', '**/*.spec.js']
+```
+
+### `relativeTo`
+
+- **Type:** `string`
+- **Default:** `process.cwd()`
+- **Description:** The base directory for resolving patterns.
+
+```javascript
+relativeTo: __dirname
+```
+
+## Handler Signature
+
+Handler files should export a function that returns a hapi handler function:
+
+```javascript
+// handlers/userHandler.js
 'use strict';
 
 module.exports = (route, options) => {
+    // route: the hapi route configuration
+    // options: options passed from route handler config
 
-    return (request, reply) => {
-
-        return reply({
-            message: 'Hello World.'
-        });
+    return (request, h) => {
+        return {
+            message: options.message || 'Default message',
+            user: request.params.id
+        };
     };
 };
 ```
+
+### Using the Handler
+
+```javascript
+server.route({
+    method: 'GET',
+    path: '/user/{id}',
+    handler: {
+        userHandler: {
+            message: 'User details'
+        }
+    }
+});
+```
+
+### Async Handlers
+
+```javascript
+module.exports = (route, options) => {
+    return async (request, h) => {
+        const user = await fetchUser(request.params.id);
+        return user;
+    };
+};
+```
+
+## Migration from v2/v3
+
+Version 4.0.0 has breaking changes to support hapi v21+:
+
+### Plugin Registration
+
+```javascript
+// v2/v3 (hapi v13-v16)
+server.register({
+    register: require('hapi-handlers'),
+    options: { ... }
+}, callback);
+
+// v4 (hapi v21+)
+await server.register({
+    plugin: require('hapi-handlers'),
+    options: { ... }
+});
+```
+
+### Handler Signature
+
+```javascript
+// v2/v3
+module.exports = (route, options) => {
+    return (request, reply) => {
+        return reply({ message: 'Hello' });
+    };
+};
+
+// v4
+module.exports = (route, options) => {
+    return (request, h) => {
+        return { message: 'Hello' };
+        // or: return h.response({ message: 'Hello' });
+    };
+};
+```
+
+### Server Connection
+
+```javascript
+// v2/v3
+const server = new Hapi.Server();
+server.connection({ port: 3000 });
+
+// v4
+const server = Hapi.server({ port: 3000 });
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+MIT - see [LICENSE](LICENSE) for details.

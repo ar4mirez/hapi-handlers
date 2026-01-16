@@ -1,2 +1,26 @@
-node_modules
-test/artifacts/*
+# Dependencies
+node_modules/
+
+# Test artifacts
+test/artifacts/
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+!.env.example
