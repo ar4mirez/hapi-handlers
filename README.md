@@ -1,11 +1,13 @@
-# hapi-handlers
+# @ar4mirez/hapi-handlers
 
-[![npm version](https://img.shields.io/npm/v/hapi-handlers.svg)](https://www.npmjs.com/package/hapi-handlers)
+[![npm version](https://img.shields.io/npm/v/@ar4mirez/hapi-handlers.svg)](https://www.npmjs.com/package/@ar4mirez/hapi-handlers)
 [![CI](https://github.com/ar4mirez/hapi-handlers/actions/workflows/ci.yml/badge.svg)](https://github.com/ar4mirez/hapi-handlers/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/node/v/hapi-handlers.svg)](https://nodejs.org)
+[![Node.js](https://img.shields.io/node/v/@ar4mirez/hapi-handlers.svg)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Plugin to autoload handlers for [hapi.js](https://hapi.dev/) based on glob patterns.
+
+> **Note:** This package was previously published as `hapi-handlers`. The scoped package `@ar4mirez/hapi-handlers` is the actively maintained version.
 
 ## Requirements
 
@@ -15,7 +17,7 @@ Plugin to autoload handlers for [hapi.js](https://hapi.dev/) based on glob patte
 ## Installation
 
 ```bash
-npm install hapi-handlers
+npm install @ar4mirez/hapi-handlers
 ```
 
 ## Usage
@@ -29,7 +31,7 @@ const init = async () => {
     const server = Hapi.server({ port: 3000 });
 
     await server.register({
-        plugin: require('hapi-handlers'),
+        plugin: require('@ar4mirez/hapi-handlers'),
         options: {
             includes: 'path/to/**/*Handler.js'
         }
@@ -57,7 +59,7 @@ init();
 
 ```javascript
 await server.register({
-    plugin: require('hapi-handlers'),
+    plugin: require('@ar4mirez/hapi-handlers'),
     options: {
         includes: [
             'handlers/**/*.js',
@@ -78,7 +80,7 @@ const manifest = {
     register: {
         plugins: [
             {
-                plugin: 'hapi-handlers',
+                plugin: '@ar4mirez/hapi-handlers',
                 options: {
                     includes: 'handlers/**/*.js',
                     relativeTo: __dirname
@@ -178,13 +180,13 @@ Version 4.0.0 has breaking changes to support hapi v21+:
 ```javascript
 // v2/v3 (hapi v13-v16)
 server.register({
-    register: require('hapi-handlers'),
+    register: require('@ar4mirez/hapi-handlers'),
     options: { ... }
 }, callback);
 
 // v4 (hapi v21+)
 await server.register({
-    plugin: require('hapi-handlers'),
+    plugin: require('@ar4mirez/hapi-handlers'),
     options: { ... }
 });
 ```

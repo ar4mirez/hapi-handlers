@@ -1,7 +1,7 @@
 {
-  "name": "hapi-handlers",
+  "name": "@ar4mirez/hapi-handlers",
   "description": "Autoload Handlers for HapiJS.",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "Angel Ramirez <angel@cuemby.com>",
   "bugs": {
     "url": "https://github.com/ar4mirez/hapi-handlers/issues"

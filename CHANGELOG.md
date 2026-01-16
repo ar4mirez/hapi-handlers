@@ -5,7 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.0.0] - 2025-01-16
+## [4.0.1] - 2026-01-16
+
+### Changed
+
+- **Package renamed**: Now published as `@ar4mirez/hapi-handlers` (scoped package)
+- The unscoped `hapi-handlers` package has been deprecated in favor of this scoped version
+- Updated all documentation to reflect new package name
+
+### Migration from `hapi-handlers`
+
+```bash
+# Remove old package
+npm uninstall hapi-handlers
+
+# Install scoped package
+npm install @ar4mirez/hapi-handlers
+```
+
+Update your imports:
+
+```javascript
+// Before
+require('hapi-handlers')
+
+// After
+require('@ar4mirez/hapi-handlers')
+```
+
+## [4.0.0] - 2026-01-16
 
 ### Breaking Changes
 
